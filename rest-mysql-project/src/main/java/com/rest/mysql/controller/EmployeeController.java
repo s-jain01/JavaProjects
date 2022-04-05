@@ -27,12 +27,14 @@ public class EmployeeController {
 		this.employeeService = employeeService;
 	}
 
-	@PostMapping("/create_record")
+	// http://localhost:8080/api/employees/create_record
+	@PostMapping("/createRecord")
 	public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
 		return new ResponseEntity<Employee>(employeeService.saveEmployeeRecord(employee), HttpStatus.CREATED);
 	}
 
-	@GetMapping //we can give here own custom path like above PostMapping operation
+	// http://localhost:8080/api/employees
+	@GetMapping
 	public List<Employee> getAllEmployees() {
 		return employeeService.getAllEmployees();
 	}
@@ -52,13 +54,11 @@ public class EmployeeController {
 	// http://localhost:8080/api/employees/1
 	@DeleteMapping("{id}")
 	public ResponseEntity<String> deleteEmployee(@PathVariable("id") long id) {
-
-		// delete employee from DB
 		employeeService.deleteEmployee(id);
-
 		return new ResponseEntity<String>("Employee deleted successfully!.", HttpStatus.OK);
 	}
 	
+	// http://localhost:8080/api/employees/highestPaidDepartmentDetails
 	@GetMapping("/highestPaidDepartmentDetails")
 	public HighestPaidDepartmentDetails getHighestPaidDepartmentDetails() {
 		return employeeService.getHighestPaidDepartmentInfo();
