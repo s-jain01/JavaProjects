@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.rest.mysql.exception.ResourceNotFoundException;
 import com.rest.mysql.model.Employee;
-import com.rest.mysql.model.HighestPaidDepartmentDetails;
+import com.rest.mysql.object.to.HighestPaidDepartmentDetails;
 import com.rest.mysql.repository.EmployeeRepository;
 import com.rest.mysql.service.EmployeeService;
 
@@ -46,7 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		existingEmployee.setFirstName(employee.getFirstName());
 		existingEmployee.setLastName(employee.getLastName());
 		existingEmployee.setEmail(employee.getEmail());
-		existingEmployee.setDepttId(employee.getDepttId());
 		existingEmployee.setSalary(employee.getSalary());
 		repo.save(existingEmployee);
 		return existingEmployee;
@@ -62,18 +61,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public HighestPaidDepartmentDetails getHighestPaidDepartmentInfo() {
 		HighestPaidDepartmentDetails highestPaidDepartmentDetails = new HighestPaidDepartmentDetails();
 		List<Employee> employeesList = repo.findAll();
-		HashMap<String, Double> depttMap = new HashMap<>();
+		HashMap<Long, Double> depttMap = new HashMap<>();
 		for (Employee emp : employeesList) {
-			if (depttMap.get(emp.getDepttId()) != null) {
-				depttMap.put(emp.getDepttId(), depttMap.get(emp.getDepttId()) + emp.getSalary());
+			if (depttMap.get(emp.getDeptt().getDepartmentId()) != null) {
+				depttMap.put(emp.getDeptt().getDepartmentId(),
+						depttMap.get(emp.getDeptt().getDepartmentId()) + emp.getSalary());
 			} else {
-				depttMap.put(emp.getDepttId(), emp.getSalary());
+				depttMap.put(emp.getDeptt().getDepartmentId(), emp.getSalary());
 			}
 		}
 
-		Entry<String, Double> highestPaidDepttEntry = findHighestPaidDepttId(depttMap);
+		Entry<Long, Double> highestPaidDepttEntry = findHighestPaidDepttId(depttMap);
 		Long totalEmployeesUnderSpecifiedDeptt = employeesList.stream()
-				.filter(e -> e.getDepttId().equalsIgnoreCase(highestPaidDepttEntry.getKey())).count();
+				.filter(e -> e.getDeptt().getDepartmentId() == (highestPaidDepttEntry.getKey())).count();
 		highestPaidDepartmentDetails.setDepartmentId(highestPaidDepttEntry.getKey());
 		highestPaidDepartmentDetails.setTotalSalary(highestPaidDepttEntry.getValue());
 		highestPaidDepartmentDetails.setTotalEmployees(totalEmployeesUnderSpecifiedDeptt);

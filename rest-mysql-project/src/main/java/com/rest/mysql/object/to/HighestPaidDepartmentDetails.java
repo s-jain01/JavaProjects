@@ -1,4 +1,4 @@
-package com.rest.mysql.model;
+package com.rest.mysql.object.to;
 
 import lombok.Data;
 
@@ -6,5 +6,5 @@ import lombok.Data;
 public class HighestPaidDepartmentDetails {
 	private double totalSalary;
 	private long totalEmployees;
-	private String departmentId;
+	private long departmentId;
 }

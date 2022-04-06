@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rest.mysql.model.Employee;
-import com.rest.mysql.model.HighestPaidDepartmentDetails;
+import com.rest.mysql.object.to.HighestPaidDepartmentDetails;
 import com.rest.mysql.service.EmployeeService;
 
 @RestController
@@ -28,7 +28,7 @@ public class EmployeeController {
 	}
 
 	// http://localhost:8080/api/employees/create_record
-	@PostMapping("/createRecord")
+	@PostMapping("/create")
 	public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
 		return new ResponseEntity<Employee>(employeeService.saveEmployeeRecord(employee), HttpStatus.CREATED);
 	}

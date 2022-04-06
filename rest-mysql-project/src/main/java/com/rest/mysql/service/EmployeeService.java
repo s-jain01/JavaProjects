@@ -3,7 +3,7 @@ package com.rest.mysql.service;
 import java.util.List;
 
 import com.rest.mysql.model.Employee;
-import com.rest.mysql.model.HighestPaidDepartmentDetails;
+import com.rest.mysql.object.to.HighestPaidDepartmentDetails;
 
 public interface EmployeeService {
 	Employee saveEmployeeRecord(Employee employee);
